@@ -52,9 +52,14 @@ def train_one_epoch(model, dataloader, criterion, optimizer, device, stage=1, gr
             "labels": batch["labels"].to(device),
             "mask": batch["mask"].to(device),
         }
+        # SSL: compute embeddings from two augmented views (model forward) for contrastive loss
         ssl_emb = None
         if "ssl_z1" in batch and batch["ssl_z1"] is not None:
-            ssl_emb = (batch["ssl_z1"].to(device), batch["ssl_z2"].to(device))
+            z1_seq = batch["ssl_z1"].to(device)
+            z2_seq = batch["ssl_z2"].to(device)
+            out1 = model(z1_seq, target_prior=None)
+            out2 = model(z2_seq, target_prior=None)
+            ssl_emb = (out1["pooled"], out2["pooled"])
         task_type = batch.get("task_type", "SOT")
         if isinstance(task_type, (list, tuple)):
             task_type = task_type[0]
@@ -95,7 +100,11 @@ def validate(model, dataloader, criterion, device, stage=1):
         }
         ssl_emb = None
         if "ssl_z1" in batch and batch["ssl_z1"] is not None:
-            ssl_emb = (batch["ssl_z1"].to(device), batch["ssl_z2"].to(device))
+            z1_seq = batch["ssl_z1"].to(device)
+            z2_seq = batch["ssl_z2"].to(device)
+            out1 = model(z1_seq, target_prior=None)
+            out2 = model(z2_seq, target_prior=None)
+            ssl_emb = (out1["pooled"], out2["pooled"])
         task_type = batch.get("task_type", "SOT")
         if isinstance(task_type, (list, tuple)):
             task_type = task_type[0]
@@ -106,6 +115,57 @@ def validate(model, dataloader, criterion, device, stage=1):
         for k in loss_meters:
             v = losses[k]
             loss_meters[k].update(v.item() if torch.is_tensor(v) else v, x_seq.size(0))
+
+    return {k: v.avg for k, v in loss_meters.items()}
+
+
+# ----------------------------
+#  SSL refinement loop (SSL-only rounds: L_SSL + L_TCM, no task losses)
+# ----------------------------
+def train_ssl_refinement_epoch(model, dataloader, criterion, optimizer, device, grad_clip=5.0):
+    """
+    One epoch of self-supervised refinement: only SSL contrastive + TCM.
+    Uses two augmented views for L_SSL and main sequence for L_TCM.
+    """
+    model.train()
+    loss_meters = {k: AverageMeter() for k in ["total", "ssl", "tcm"]}
+
+    for batch in dataloader:
+        x_seq = batch["frames"].to(device)
+        ssl_emb = None
+        if "ssl_z1" in batch and batch["ssl_z1"] is not None:
+            z1_seq = batch["ssl_z1"].to(device)
+            z2_seq = batch["ssl_z2"].to(device)
+            out1 = model(z1_seq, target_prior=None)
+            out2 = model(z2_seq, target_prior=None)
+            ssl_emb = (out1["pooled"], out2["pooled"])
+        outputs = model(x_seq, target_prior=None)
+        # Dummy targets; only ssl and tcm are used when we pass stage=0
+        targets = {
+            "bbox": batch["bbox"].to(device),
+            "labels": batch["labels"].to(device),
+            "mask": batch["mask"].to(device),
+        }
+        losses = criterion(
+            outputs,
+            targets,
+            task_type="SOT",
+            ssl_emb=ssl_emb,
+            stage=0,
+        )
+        # stage=0: TotalLoss returns total = λ_SSL L_SSL + λ_TCM L_TCM only
+        loss_ssl = losses["ssl"]
+        loss_tcm = losses["tcm"]
+
+        optimizer.zero_grad()
+        losses["total"].backward()
+        if grad_clip > 0:
+            torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
+        optimizer.step()
+
+        loss_meters["ssl"].update(loss_ssl.item(), x_seq.size(0))
+        loss_meters["tcm"].update(loss_tcm.item(), x_seq.size(0))
+        loss_meters["total"].update(losses["total"].item(), x_seq.size(0))
 
     return {k: v.avg for k, v in loss_meters.items()}
 
@@ -218,6 +278,17 @@ def main(config):
                 save_checkpoint(model, optimizer, epoch, config["checkpoint_path"])
     start_epoch = stage1_epochs
 
+    # ---------- SSL refinement loop (optional): SSL-only rounds after Stage 1 ----------
+    ssl_refinement_rounds = config.get("ssl_refinement_rounds", 0)
+    if ssl_refinement_rounds > 0:
+        ssl_lr = config.get("ssl_refinement_lr", 1e-5)
+        opt_ssl = optim.AdamW(model.parameters(), lr=ssl_lr, weight_decay=1e-4)
+        for r in range(ssl_refinement_rounds):
+            ssl_losses = train_ssl_refinement_epoch(
+                model, train_loader, criterion, opt_ssl, device, grad_clip=grad_clip
+            )
+            print(f"[SSL refinement] Round {r+1}/{ssl_refinement_rounds} Train {ssl_losses}")
+
     # ---------- Stage 2: VOS + MOTS (segmentation); reduce backbone LR ----------
     lr_backbone_s2 = config.get("lr_backbone_stage2", 1e-5)
     optimizer = optim.AdamW(
@@ -243,6 +314,15 @@ def main(config):
                 best_val_loss = val_losses["total"]
                 save_checkpoint(model, optimizer, epoch, config["checkpoint_path"])
     start_epoch += stage2_epochs
+
+    # ---------- SSL refinement loop (optional): SSL-only rounds after Stage 2 ----------
+    if ssl_refinement_rounds > 0:
+        opt_ssl = optim.AdamW(model.parameters(), lr=config.get("ssl_refinement_lr", 1e-5), weight_decay=1e-4)
+        for r in range(ssl_refinement_rounds):
+            ssl_losses = train_ssl_refinement_epoch(
+                model, train_loader, criterion, opt_ssl, device, grad_clip=grad_clip
+            )
+            print(f"[SSL refinement] Round {r+1}/{ssl_refinement_rounds} Train {ssl_losses}")
 
     # ---------- Joint fine-tune (all tasks, low LR) ----------
     lr_finetune = config.get("lr_finetune", 1e-5)
@@ -289,5 +369,7 @@ if __name__ == "__main__":
         "lambda_tcm": 0.5,
         "grad_clip": 5.0,
         "checkpoint_path": "./checkpoints/ssf4vsu_best.pth",
+        "ssl_refinement_rounds": 0,
+        "ssl_refinement_lr": 1e-5,
     }
     main(config)

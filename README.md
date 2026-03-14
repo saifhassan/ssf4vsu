@@ -18,7 +18,7 @@ The design and training methodology are described in our [paper](https://doi.org
 - 🔄 **Temporal Consistency Module (TCM)**: Embedding-level consistency loss across consecutive frames.
 - 📎 **Feature Aggregation Module (FAM)**: Fuses TAM output with backbone/FPN features before the heads.
 - 🎯 **Unified heads**: Single detection head (SOT/MOT) and segmentation head (VOS/MOTS).
-- 🔒 **Self-supervised learning (SSL)**: Contrastive (InfoNCE-style) and TCM; optional refinement loop.
+- 🔒 **Self-supervised learning (SSL)**: Contrastive (InfoNCE-style) on model embeddings from two augmented views; L_TCM for temporal consistency. Optional **SSL refinement loop**: after Stage 1 and Stage 2, run SSL-only rounds (only L_SSL + L_TCM) via `ssl_refinement_rounds` in config.
 - 🚀 **Two-stage training**: Stage 1 — SOT+MOT (detection only, ~50 epochs); Stage 2 — VOS+MOTS (segmentation, ~20 epochs); then joint fine-tune (~5 epochs). Warm-up + multi-step LR decay.
 - 📐 **Input resolution**: 640×360 (default) or 1280×720; ImageNet normalization.
 - 📊 **Evaluation**: LaSOT, TrackingNet (SOT); MOT17, BDD100K (MOT); DAVIS2016/2017 (VOS); MOTS20, BDD100K MOTS (MOTS).

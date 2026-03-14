@@ -82,6 +82,22 @@ class TotalLoss(nn.Module):
         loss_det = torch.tensor(0.0, device=device)
         loss_mask = torch.tensor(0.0, device=device)
 
+        # stage=0: SSL refinement loop — only L_SSL + L_TCM (no task losses)
+        if stage == 0:
+            loss_ssl = torch.tensor(0.0, device=device)
+            if ssl_emb is not None:
+                z1, z2 = ssl_emb
+                if z1 is not None and z2 is not None:
+                    if z1.dim() == 3:
+                        z1 = z1[:, -1].reshape(z1.size(0), -1)
+                        z2 = z2[:, -1].reshape(z2.size(0), -1)
+                    loss_ssl = self.ssl_loss(z1, z2)
+            loss_tcm = outputs.get("tcm_loss", torch.tensor(0.0, device=device))
+            if not isinstance(loss_tcm, torch.Tensor):
+                loss_tcm = torch.tensor(loss_tcm, device=device)
+            total = self.lambda_ssl * loss_ssl + self.lambda_tcm * loss_tcm
+            return {"total": total, "det": loss_det, "mask": loss_mask, "ssl": loss_ssl, "tcm": loss_tcm}
+
         if task_type in ("SOT", "MOT", "MOTS"):
             bbox = targets.get("bbox")
             labels = targets.get("labels")

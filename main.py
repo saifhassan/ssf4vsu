@@ -108,6 +108,8 @@ if __name__ == "__main__":
             "seq_len": 8,
             "ssl": True,
             "checkpoint_path": args.checkpoint,
+            "ssl_refinement_rounds": getattr(args, "ssl_refinement_rounds", 0),
+            "ssl_refinement_lr": getattr(args, "ssl_refinement_lr", 1e-5),
         }
         train_main(config)
 
