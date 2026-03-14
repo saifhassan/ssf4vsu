@@ -47,11 +47,17 @@ $$\mathcal{L}_{TCM} = \frac{1}{N}\sum_{i=1}^{N} \left\| \mathbf{z}_t^{(i)} - \ma
 
 SSF4VSU is a **single model** that handles four visual scene understanding tasks (SOT, MOT, VOS, MOTS) via a shared backbone, unified embedding with target prior, temporal attention (TAM) and consistency (TCM), and task-specific heads. Training follows a **two-stage pipeline**: Stage 1 trains on SOT and MOT (detection only); Stage 2 adds VOS and MOTS (segmentation), then a short joint fine-tuning phase.
 
-<img src="docs/architecture/block-diagram.png" width="720" alt="SSF4VSU pipeline" />
+<img src="docs/architecture/pipeline-ss4vsu.png" width="720" alt="SSF4VSU pipeline" />
 
 **Methodology (two-stage training):**
 
 <img src="docs/architecture/two-stage-training.png" width="720" alt="Two-stage training" />
+
+**Proposed methodology:**
+
+<img src="docs/architecture/methodology-diagram.png" width="720" alt="Proposed methodology" />
+
+*[PDF](docs/architecture/methodology-diagram.pdf)*
 
 **Architecture:** See [docs/architecture/](docs/architecture/) for block diagram, backbone+FPN, unified embedding, TAM, unified heads, and SSL strategies.
 
