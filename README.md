@@ -33,7 +33,13 @@ Total multi-task loss:
 
 $$L_{total} = \lambda_{det} L_{det} + \lambda_{mask} L_{mask} + \lambda_{SSL} L_{SSL} + \lambda_{TCM} L_{TCM}$$
 
-TAM attention: $F^{att}_t = \text{softmax}(QK^T / \sqrt{d})\, V$ with $Q$ from current frame, $K,V$ from reference. TCM: embedding consistency $\mathcal{L}_{TCM} = \frac{1}{N}\sum_i \| \mathbf{z}_t^{(i)} - \mathbf{z}_{t-1}^{(i)} \|^2$.
+Temporal Attention Module (TAM), with $Q$ from current frame and $K,V$ from reference:
+
+$$A = \text{softmax}\left(\frac{QK^T}{\sqrt{d}}\right), \qquad F^{att}_t = A \, V$$
+
+Temporal Consistency Module (TCM), embedding consistency across consecutive frames:
+
+$$\mathcal{L}_{TCM} = \frac{1}{N}\sum_{i=1}^{N} \left\| \mathbf{z}_t^{(i)} - \mathbf{z}_{t-1}^{(i)} \right\|^2$$
 
 ---
 
