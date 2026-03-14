@@ -1,0 +1,62 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model checkpoints and data (do not commit large files)
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+data/
+*.zip
+*.tar
+*.tar.gz
+
+# Logs and outputs
+logs/
+runs/
+outputs/
+wandb/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local config (if you add one)
+config.local.*
+.env.local
