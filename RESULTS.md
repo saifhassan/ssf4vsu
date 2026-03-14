@@ -20,6 +20,8 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | OmniTracker-L | 69.1 | 75.4 | 83.4 | 82.3 |
 | **SSF4VSU (Ours)** | **71.3** | **77.8** | **84.5** | **83.0** |
 
+**LaSOT success and precision curves:** [View plot (PDF)](docs/results/lasot_ope_plots.pdf)
+
 ---
 
 ## Multi-Object Tracking (MOT)
@@ -37,6 +39,8 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | OmniTracker-L | 79.1 | 75.6 | 62.3 | – | – | 87192 | 1968 | – |
 | **SSF4VSU (Ours)** | **81.9** | **80.3** | **65.2** | **60.0%** | **12.3%** | **48000** | **72000** | **4520** |
 
+**MOT17 result figures:** [MOTA vs IDF1 tradeoff (PDF)](docs/results/mot17_tradeoff_scatter.pdf) · [MOTA, IDF1, HOTA bars (PDF)](docs/results/mot17_grouped_bars.pdf) · [FP/FN/ID breakdown (PDF)](docs/results/mot17_error_breakdown.pdf)
+
 ### BDD100K (validation)
 
 | Tracker | mMOTSA↑ | mIDF1↑ | MOTA↑ | IDF1↑ | FN↓ | FP↓ | IDs↓ | MT↑ | ML↓ |
@@ -46,6 +50,8 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | ByteTrack | 40.1 | 55.8 | 69.6 | 71.3 | 169073 | 63869 | 15466 | 18057 | 5107 |
 | Unicorn | 41.2 | 54.0 | 66.6 | 71.3 | 95454 | 41648 | 10876 | 10296 | 2505 |
 | **SSF4VSU (Ours)** | **43.5** | **57.0** | **71.0** | **74.5** | **90000** | **40000** | **11500** | **11000** | **3048** |
+
+**BDD100K MOT result figures:** [Error composition (PDF)](docs/results/bdd100k_error_composition.pdf) · [MT vs ML (PDF)](docs/results/bdd100k_mt_ml.pdf) · [Grouped metrics (PDF)](docs/results/bdd100k_grouped_metrics.pdf)
 
 ---
 
@@ -64,6 +70,8 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | Unicorn | 87.4 | 86.5 | 88.2 | 69.2 | 65.2 | 73.2 |
 | OmniTracker-L | 88.5 | 87.3 | 89.7 | 71.0 | 66.8 | 75.2 |
 | **SSF4VSU (Ours)** | **93.3** | **92.4** | **94.4** | **89.0** | **86.7** | **93.4** |
+
+**DAVIS-2016/2017 normalized radar (J&F, J Mean, F Mean):** [View plot (PDF)](docs/results/davis_radar_top5_norm.pdf)
 
 ---
 
@@ -87,6 +95,8 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | PCAN | 27.4 | 66.7 | 45.1 | **876** | 26.6 |
 | Unicorn | 29.6 | 67.7 | 44.2 | 1731 | 32.1 |
 | **SSF4VSU (Ours)** | **31.2** | **70.2** | **46.0** | 1462 | **33.7** |
+
+**BDD100K MOTS result figures:** [Radar (mMOTSA, mMOTSP, mIDF1, mAP) (PDF)](docs/results/bdd100k_mots_radar.pdf) · [ID switches comparison (PDF)](docs/results/bdd100k_mots_idsw_line.pdf)
 
 ---
 
@@ -136,30 +146,9 @@ Full model vs. ablated variants (TAM, TCM, SSL removed) on LaSOT, MOT17, DAVIS-2
 
 ---
 
-## Result figures
+## Result figures (summary)
 
-Plots are in [docs/results/](docs/results/). Copy from thesis `Figures/` using the suggested names in the main README.
-
-### SOT
-
-- **LaSOT:** Success and precision curves — [lasot-success-precision](docs/results/lasot-success-precision.png) (or `.pdf`).
-
-### MOT
-
-- **MOT17:** MOTA vs IDF1 tradeoff — [mot17-tradeoff](docs/results/mot17-tradeoff.png); grouped bars (MOTA, IDF1, HOTA) — [mot17-bars](docs/results/mot17-bars.png); FP/FN/ID breakdown — [mot17-errors](docs/results/mot17-errors.png).
-- **BDD100K:** Error composition — [bdd100k-errors](docs/results/bdd100k-errors.png); MT vs ML — [bdd100k-mt-ml](docs/results/bdd100k-mt-ml.png); grouped metrics — [bdd100k-metrics](docs/results/bdd100k-metrics.png).
-
-### VOS
-
-- **DAVIS-2016 / DAVIS-2017:** Normalized radar (J&F, J Mean, F Mean) — [davis-radar](docs/results/davis-radar.png).
-
-### MOTS
-
-- **BDD100K MOTS:** Radar (mMOTSA, mMOTSP, mIDF1, mAP) — [bdd100k-mots-radar](docs/results/bdd100k-mots-radar.png); ID switches comparison — [bdd100k-mots-idsw](docs/results/bdd100k-mots-idsw.png).
-
-### Ablation figures (optional)
-
-In [docs/ablation/](docs/ablation/): [ablation-bars](docs/ablation/ablation-bars.png), [ablation-heatmap](docs/ablation/ablation-heatmap.png).
+Result plots are linked above next to each dataset table. All files live in [docs/results/](docs/results/): `lasot_ope_plots.pdf`, `mot17_tradeoff_scatter.pdf`, `mot17_grouped_bars.pdf`, `mot17_error_breakdown.pdf`, `bdd100k_error_composition.pdf`, `bdd100k_mt_ml.pdf`, `bdd100k_grouped_metrics.pdf`, `davis_radar_top5_norm.pdf`, `bdd100k_mots_radar.pdf`, `bdd100k_mots_idsw_line.pdf`. Optional ablation figures can be added under [docs/ablation/](docs/ablation/).
 
 ---
 
