@@ -1,12 +1,12 @@
 # SSF4VSU: A Self-Supervised Synergetic Framework for Visual Scene Understanding
 
-Official implementation of **SSF4VSU**, the unified framework proposed in our PhD thesis for **Visual Scene Understanding** across:
+Official implementation of **SSF4VSU**, a unified framework for **Visual Scene Understanding** across:
 - **Single Object Tracking (SOT)**
 - **Multi-Object Tracking (MOT)**
 - **Video Object Segmentation (VOS)**
 - **Multi-Object Tracking & Segmentation (MOTS)**
 
-The design and training methodology follow **Chapter 5 (Method)** and **Chapter 5 (Results)** of the thesis: shared backbone + FPN, unified embedding with **target prior**, **TAM** and **TCM**, **Feature Aggregation Module (FAM)**, and **two-stage training** with task-conditioned loss routing.
+The design and training methodology are described in our [paper](https://doi.org/10.1109/ACCESS.2025.3634778): shared backbone + FPN, unified embedding with **target prior**, **TAM** and **TCM**, **Feature Aggregation Module (FAM)**, and **two-stage training** with task-conditioned loss routing.
 
 ---
 
@@ -47,9 +47,13 @@ $$\mathcal{L}_{TCM} = \frac{1}{N}\sum_{i=1}^{N} \left\| \mathbf{z}_t^{(i)} - \ma
 
 SSF4VSU is a **single model** that handles four visual scene understanding tasks (SOT, MOT, VOS, MOTS) via a shared backbone, unified embedding with target prior, temporal attention (TAM) and consistency (TCM), and task-specific heads. Training follows a **two-stage pipeline**: Stage 1 trains on SOT and MOT (detection only); Stage 2 adds VOS and MOTS (segmentation), then a short joint fine-tuning phase.
 
-![Pipeline](docs/architecture/block-diagram.png)
+<img src="docs/architecture/block-diagram.png" width="720" alt="SSF4VSU pipeline" />
 
-**Architecture:** See [docs/architecture/](docs/architecture/) for the full set of diagrams: block diagram, backbone+FPN, unified embedding, TAM, unified heads, and SSL strategies. The two-stage training flow is in `two-stage-training.png`.
+**Methodology (two-stage training):**
+
+<img src="docs/architecture/two-stage-training.png" width="720" alt="Two-stage training" />
+
+**Architecture:** See [docs/architecture/](docs/architecture/) for block diagram, backbone+FPN, unified embedding, TAM, unified heads, and SSL strategies.
 
 ---
 
@@ -109,7 +113,7 @@ frame_idx, x, y, w, h, label_id, mask_path(optional)
 
 ---
 
-## Training (two-stage, thesis-aligned)
+## Training (two-stage)
 
 From the **repo root** (after `pip install -r requirements.txt`):
 

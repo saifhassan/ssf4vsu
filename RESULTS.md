@@ -1,6 +1,6 @@
-# Benchmark Results (from thesis)
+# Benchmark Results
 
-All results below are from the PhD thesis evaluation of SSF4VSU. Single model, no task-specific tuning; same checkpoint for all tasks. Input resolution: 1280×720 (or 640×360); online inference.
+All results below are from the evaluation of SSF4VSU reported in our [paper](https://doi.org/10.1109/ACCESS.2025.3634778). Single model, no task-specific tuning; same checkpoint for all tasks. Input resolution: 1280×720 (or 640×360); online inference.
 
 ---
 
@@ -22,7 +22,7 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 
 **LaSOT success and precision curves:**
 
-![LaSOT success and precision](docs/results/lasot_ope_plots.png)
+<img src="docs/results/lasot_ope_plots.png" width="420" />
 
 *[PDF](docs/results/lasot_ope_plots.pdf)*
 
@@ -43,19 +43,11 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | OmniTracker-L | 79.1 | 75.6 | 62.3 | – | – | 87192 | 1968 | – |
 | **SSF4VSU (Ours)** | **81.9** | **80.3** | **65.2** | **60.0%** | **12.3%** | **48000** | **72000** | **4520** |
 
-**MOT17 result figures:**
+**MOT17 result figures** (three per row):
 
-*MOTA vs IDF1 tradeoff*
-
-![MOT17 tradeoff](docs/results/mot17_tradeoff_scatter.png)
-
-*MOTA, IDF1, HOTA bars*
-
-![MOT17 bars](docs/results/mot17_grouped_bars.png)
-
-*FP / FN / ID breakdown*
-
-![MOT17 errors](docs/results/mot17_error_breakdown.png)
+| MOTA vs IDF1 tradeoff | MOTA, IDF1, HOTA bars | FP / FN / ID breakdown |
+|:---------------------:|:---------------------:|:----------------------:|
+| ![MOT17 tradeoff](docs/results/mot17_tradeoff_scatter.png) | ![MOT17 bars](docs/results/mot17_grouped_bars.png) | ![MOT17 errors](docs/results/mot17_error_breakdown.png) |
 
 *[PDF](docs/results/mot17_tradeoff_scatter.pdf) · [PDF](docs/results/mot17_grouped_bars.pdf) · [PDF](docs/results/mot17_error_breakdown.pdf)*
 
@@ -69,19 +61,11 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | Unicorn | 41.2 | 54.0 | 66.6 | 71.3 | 95454 | 41648 | 10876 | 10296 | 2505 |
 | **SSF4VSU (Ours)** | **43.5** | **57.0** | **71.0** | **74.5** | **90000** | **40000** | **11500** | **11000** | **3048** |
 
-**BDD100K MOT result figures:**
+**BDD100K MOT result figures** (three per row):
 
-*Error composition*
-
-![BDD100K errors](docs/results/bdd100k_error_composition.png)
-
-*MT vs ML*
-
-![BDD100K MT-ML](docs/results/bdd100k_mt_ml.png)
-
-*Grouped metrics*
-
-![BDD100K metrics](docs/results/bdd100k_grouped_metrics.png)
+| Error composition | MT vs ML | Grouped metrics |
+|:-----------------:|:--------:|:---------------:|
+| ![BDD100K errors](docs/results/bdd100k_error_composition.png) | ![BDD100K MT-ML](docs/results/bdd100k_mt_ml.png) | ![BDD100K metrics](docs/results/bdd100k_grouped_metrics.png) |
 
 *[PDF](docs/results/bdd100k_error_composition.pdf) · [PDF](docs/results/bdd100k_mt_ml.pdf) · [PDF](docs/results/bdd100k_grouped_metrics.pdf)*
 
@@ -103,9 +87,9 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | OmniTracker-L | 88.5 | 87.3 | 89.7 | 71.0 | 66.8 | 75.2 |
 | **SSF4VSU (Ours)** | **93.3** | **92.4** | **94.4** | **89.0** | **86.7** | **93.4** |
 
-**DAVIS-2016/2017 normalized radar (J&F, J Mean, F Mean):**
+**DAVIS-2016/2017 normalized radar** (J&F, J Mean, F Mean):
 
-![DAVIS radar](docs/results/davis_radar_top5_norm.png)
+<img src="docs/results/davis_radar_top5_norm.png" width="420" />
 
 *[PDF](docs/results/davis_radar_top5_norm.pdf)*
 
@@ -132,15 +116,15 @@ All results below are from the PhD thesis evaluation of SSF4VSU. Single model, n
 | Unicorn | 29.6 | 67.7 | 44.2 | 1731 | 32.1 |
 | **SSF4VSU (Ours)** | **31.2** | **70.2** | **46.0** | 1462 | **33.7** |
 
-**BDD100K MOTS result figures:**
+**BDD100K MOTS result figures** (radar and line chart):
 
 *Radar (mMOTSA, mMOTSP, mIDF1, mAP)*
 
-![BDD100K MOTS radar](docs/results/bdd100k_mots_radar.png)
+<img src="docs/results/bdd100k_mots_radar.png" width="420" />
 
 *ID switches comparison*
 
-![BDD100K MOTS ID switches](docs/results/bdd100k_mots_idsw_line.png)
+<img src="docs/results/bdd100k_mots_idsw_line.png" width="420" />
 
 *[PDF](docs/results/bdd100k_mots_radar.pdf) · [PDF](docs/results/bdd100k_mots_idsw_line.pdf)*
 
@@ -190,12 +174,18 @@ Full model vs. ablated variants (TAM, TCM, SSL removed) on LaSOT, MOT17, DAVIS-2
 | – SSL | 68.0 | 68.5 |
 | – TAM & TCM | 62.0 | 60.0 |
 
+**Ablation figures:**
+
+| Ablation bar chart (metric drop by variant) | Ablation relative drop heatmap |
+|:------------------------------------------:|:------------------------------:|
+| ![Ablation bars](docs/ablation/ablation-bars.png) | ![Ablation heatmap](docs/ablation/ablation-heatmap.png) |
+
 ---
 
 ## Result figures (summary)
 
-Figures are shown inline above after each dataset table (PNG). PDFs are in [docs/results/](docs/results/) for full resolution. Optional ablation figures can be added under [docs/ablation/](docs/ablation/).
+Figures are shown inline above after each dataset table (PNG). PDFs are in [docs/results/](docs/results/) for full resolution. Ablation figures are in [docs/ablation/](docs/ablation/).
 
 ---
 
-*Source: PhD thesis Chapter 5 (Results). See paper/thesis for experimental details, citations, and full discussion.*
+*Source: See cited paper for experimental details, protocols, and full discussion.*
