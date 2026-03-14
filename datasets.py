@@ -1,9 +1,6 @@
 """
-Unified dataset for SSF4VSU. Aligned with thesis 05Method.tex & 05Results.tex.
-- Input resolution: 640x360 (default) or 1280x720 (configurable)
-- ImageNet normalization (zero mean, unit variance)
-- Task-specific augmentations (SOT: target box shift, frame skip; MOT: occlusion; VOS/MOTS: motion blur, etc.)
-- Returns: frames, target_prior, bbox, labels, mask, task_type, ssl pairs
+Unified dataset for SSF4VSU: frames, target_prior, bbox, labels, mask, task_type.
+Resolution 640x360 (default) or 1280x720; ImageNet normalization; task-specific augmentations.
 """
 import os
 import glob
@@ -14,18 +11,17 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from PIL import Image
 
-# Thesis: ImageNet mean/std for normalization
+# ImageNet mean/std for normalization
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
-# Default resolution (thesis: 640x360 for efficiency; 1280x720 for experiments)
+# Default resolution (640x360 or 1280x720)
 DEFAULT_RESOLUTION = (640, 360)
 
 
 def get_transforms(augment=True, resolution=DEFAULT_RESOLUTION, task="SOT"):
     """
     Preprocessing: resize, optional augmentations, ToTensor, ImageNet normalize.
-    Task-specific augmentations as in thesis Table (05Results.tex).
     """
     H, W = resolution[1], resolution[0]
     base = [
@@ -202,7 +198,7 @@ class MultiTaskDataset(Dataset):
 class MultiTaskDatasetCombined(Dataset):
     """
     Combined dataset with task-balanced sampling.
-    Proportions per thesis: ~60% MOT, 25% SOT, 10% VOS, 5% MOTS.
+    Sampling proportions: ~60% MOT, 25% SOT, 10% VOS, 5% MOTS.
     Each item has task_type for loss routing.
     """
     TASK_WEIGHTS = {"SOT": 0.25, "MOT": 0.60, "VOS": 0.10, "MOTS": 0.05}

@@ -1,8 +1,6 @@
 """
-Training loop aligned with thesis 05Method.tex & 05Results.tex.
-- Two-stage training: Stage 1 (SOT+MOT, detection only), Stage 2 (VOS+MOTS, segmentation), then joint fine-tune.
-- Warm-up (e.g. 5 epochs) + multi-step LR decay (0.1x at 50%, 80%).
-- Task-conditioned loss routing; target_prior passed to model; gradient clipping.
+Two-stage training: Stage 1 (SOT+MOT detection), Stage 2 (VOS+MOTS segmentation), then joint fine-tune.
+Warm-up + multi-step LR decay; task-conditioned loss routing; gradient clipping.
 """
 import os
 import torch
@@ -21,7 +19,7 @@ def _get_lr(optimizer):
 
 
 def get_warmup_multistep_scheduler(optimizer, warmup_epochs, total_epochs, milestones=None):
-    """Warm-up then multi-step decay (0.1x at milestones). Thesis: warm-up 5 epochs, decay at 50%, 80%."""
+    """Warm-up then multi-step decay (0.1x at milestones)."""
     if milestones is None:
         milestones = [int(0.5 * total_epochs), int(0.8 * total_epochs)]
 
@@ -190,7 +188,7 @@ def main(config):
         lambda_tcm=config.get("lambda_tcm", 0.5),
     )
 
-    # Param groups: backbone vs heads (different LR per thesis)
+    # Param groups: backbone vs heads (different learning rates)
     backbone_params = list(model.backbone.parameters()) + list(model.fpn.parameters())
     other_params = [p for n, p in model.named_parameters() if p not in set(backbone_params)]
     optimizer = optim.AdamW(

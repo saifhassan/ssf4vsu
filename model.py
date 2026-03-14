@@ -1,17 +1,13 @@
 """
-SSF4VSU Model: Aligned with thesis 05Method.tex
-- Shared backbone + FPN (P3, P4, P5, P6)
-- Unified embedding: U = F_cur + alpha * P (target prior, broadcast addition)
-- TAM (Temporal Attention Module), TCM (Temporal Consistency Module)
-- FAM (Feature Aggregation Module) fuses TAM output with backbone/FPN features
-- Unified heads for SOT, MOT, VOS, MOTS
+SSF4VSU model: shared backbone + FPN, unified embedding with target prior,
+TAM, TCM, FAM, and unified heads for SOT, MOT, VOS, MOTS.
 """
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-# ImageNet normalization (thesis: zero mean, unit variance)
+# ImageNet normalization (zero mean, unit variance)
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
@@ -51,7 +47,6 @@ class Backbone(nn.Module):
 class FPN(nn.Module):
     """
     FPN: top-down + lateral connections. Produces P3, P4, P5, P6 (all 256-d).
-    Thesis: "FPN generates feature maps at levels P3, P4, P5, P6."
     """
     def __init__(self, in_dims=(256, 512, 1024, 2048), out_dim=256):
         super().__init__()
@@ -72,7 +67,7 @@ class FPN(nn.Module):
 
 
 # ----------------------------
-#  Unified Embedding (thesis: U = F_cur + alpha * P)
+#  Unified Embedding (U = F_cur + alpha * P)
 # ----------------------------
 class UnifiedEmbedding(nn.Module):
     """

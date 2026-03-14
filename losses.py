@@ -1,7 +1,6 @@
 """
-Multi-task and SSL losses. Aligned with thesis 05Method.tex & 05Results.tex.
-- Task-conditional routing: L_mask = 0 for SOT/MOT; L_det minimal for VOS-only when no boxes.
-- L_total = λ_det L_det + λ_mask L_mask + λ_SSL L_SSL + λ_TCM L_TCM
+Multi-task and SSL losses. Task-conditional routing: L_mask = 0 for SOT/MOT.
+L_total = λ_det L_det + λ_mask L_mask + λ_SSL L_SSL + λ_TCM L_TCM
 """
 import torch
 import torch.nn as nn
@@ -28,7 +27,7 @@ class DetectionLoss(nn.Module):
 
 
 class SegmentationLoss(nn.Module):
-    """L_mask = BCE + Dice (thesis)."""
+    """L_mask = BCE + Dice."""
     def __init__(self):
         super().__init__()
         self.bce = nn.BCEWithLogitsLoss()
@@ -64,8 +63,8 @@ class SSLLoss(nn.Module):
 
 class TotalLoss(nn.Module):
     """
-    L_total = λ_det L_det + λ_mask L_mask + λ_SSL L_SSL + λ_TCM L_TCM
-    Task routing: during SOT/MOT batches L_mask=0; during VOS-only (no box) L_det optional.
+    L_total = λ_det L_det + λ_mask L_mask + λ_SSL L_SSL + λ_TCM L_TCM.
+    L_mask = 0 for SOT/MOT batches; L_det optional for VOS-only when no boxes.
     """
 
     def __init__(self, lambda_det=1.0, lambda_mask=1.0, lambda_ssl=0.5, lambda_tcm=0.5):

@@ -1,6 +1,5 @@
 """
-SSF4VSU entry point. Aligned with thesis 05Method.tex & 05Results.tex.
-Train: two-stage + joint fine-tune; Eval: with target_prior, per-task metrics.
+SSF4VSU entry point: train (two-stage + fine-tune) or eval (per-task metrics).
 """
 import argparse
 import torch
@@ -65,7 +64,7 @@ def run_evaluation(model, dataset, device, task="SOT"):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="SSF4VSU Framework (thesis-aligned)")
+    parser = argparse.ArgumentParser(description="SSF4VSU Framework")
     parser.add_argument("--mode", type=str, required=True, choices=["train", "eval"])
     parser.add_argument("--task", type=str, default="SOT", choices=["SOT", "MOT", "VOS", "MOTS"])
     parser.add_argument("--checkpoint", type=str, default="./checkpoints/ssf4vsu_best.pth")

@@ -10,10 +10,10 @@ The design and training methodology follow **Chapter 5 (Method)** and **Chapter 
 
 ---
 
-## Features (thesis-aligned)
+## Features
 
 - **Unified backbone + FPN**: Shared ResNet backbone with Feature Pyramid Network (P3, P4, P5, P6) for multi-scale features.
-- **Unified embedding**: \( U = F_{cur} + \alpha \cdot P \) (broadcast addition of target prior \(P\)). For SOT/VOS, \(P\) is the initial mask or bbox; for MOT/MOTS, \(P\) is neutral (zeros) or previous predictions.
+- **Unified embedding**: $U = F_{cur} + \alpha P$ (broadcast addition of target prior $P$). For SOT/VOS, $P$ is the initial mask or bbox; for MOT/MOTS, $P$ is neutral (zeros) or previous predictions.
 - **Temporal Attention Module (TAM)**: Q/K/V cross-attention between current and reference frame.
 - **Temporal Consistency Module (TCM)**: Embedding-level consistency loss across consecutive frames.
 - **Feature Aggregation Module (FAM)**: Fuses TAM output with backbone/FPN features before the heads.
@@ -22,6 +22,18 @@ The design and training methodology follow **Chapter 5 (Method)** and **Chapter 
 - **Two-stage training**: Stage 1 — SOT+MOT (detection only, ~50 epochs); Stage 2 — VOS+MOTS (segmentation, ~20 epochs); then joint fine-tune (~5 epochs). Warm-up + multi-step LR decay.
 - **Input resolution**: 640×360 (default) or 1280×720; ImageNet normalization.
 - **Evaluation**: LaSOT, TrackingNet (SOT); MOT17, BDD100K (MOT); DAVIS2016/2017 (VOS); MOTS20, BDD100K MOTS (MOTS).
+
+### Key equations
+
+Unified embedding (target prior broadcast addition):
+
+$$U_{ijc} = F_{cur,\,ijc} + \alpha \, P_{ij}$$
+
+Total multi-task loss:
+
+$$L_{total} = \lambda_{det} L_{det} + \lambda_{mask} L_{mask} + \lambda_{SSL} L_{SSL} + \lambda_{TCM} L_{TCM}$$
+
+TAM attention: $F^{att}_t = \text{softmax}(QK^T / \sqrt{d})\, V$ with $Q$ from current frame, $K,V$ from reference. TCM: embedding consistency $\mathcal{L}_{TCM} = \frac{1}{N}\sum_i \| \mathbf{z}_t^{(i)} - \mathbf{z}_{t-1}^{(i)} \|^2$.
 
 ---
 
