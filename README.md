@@ -1,27 +1,27 @@
 # SSF4VSU: A Self-Supervised Synergetic Framework for Visual Scene Understanding
 
 Official implementation of **SSF4VSU**, a unified framework for **Visual Scene Understanding** across:
-- **Single Object Tracking (SOT)**
-- **Multi-Object Tracking (MOT)**
-- **Video Object Segmentation (VOS)**
-- **Multi-Object Tracking & Segmentation (MOTS)**
+- 🎯 **Single Object Tracking (SOT)**
+- 👥 **Multi-Object Tracking (MOT)**
+- 🎬 **Video Object Segmentation (VOS)**
+- 🔀 **Multi-Object Tracking & Segmentation (MOTS)**
 
 The design and training methodology are described in our [paper](https://doi.org/10.1109/ACCESS.2025.3634778): shared backbone + FPN, unified embedding with **target prior**, **TAM** and **TCM**, **Feature Aggregation Module (FAM)**, and **two-stage training** with task-conditioned loss routing.
 
 ---
 
-## Features
+## ✨ Features
 
-- **Unified backbone + FPN**: Shared ResNet backbone with Feature Pyramid Network (P3, P4, P5, P6) for multi-scale features.
-- **Unified embedding**: $U = F_{cur} + \alpha P$ (broadcast addition of target prior $P$). For SOT/VOS, $P$ is the initial mask or bbox; for MOT/MOTS, $P$ is neutral (zeros) or previous predictions.
-- **Temporal Attention Module (TAM)**: Q/K/V cross-attention between current and reference frame.
-- **Temporal Consistency Module (TCM)**: Embedding-level consistency loss across consecutive frames.
-- **Feature Aggregation Module (FAM)**: Fuses TAM output with backbone/FPN features before the heads.
-- **Unified heads**: Single detection head (SOT/MOT) and segmentation head (VOS/MOTS).
-- **Self-supervised learning (SSL)**: Contrastive (InfoNCE-style) and TCM; optional refinement loop.
-- **Two-stage training**: Stage 1 — SOT+MOT (detection only, ~50 epochs); Stage 2 — VOS+MOTS (segmentation, ~20 epochs); then joint fine-tune (~5 epochs). Warm-up + multi-step LR decay.
-- **Input resolution**: 640×360 (default) or 1280×720; ImageNet normalization.
-- **Evaluation**: LaSOT, TrackingNet (SOT); MOT17, BDD100K (MOT); DAVIS2016/2017 (VOS); MOTS20, BDD100K MOTS (MOTS).
+- 🧠 **Unified backbone + FPN**: Shared ResNet backbone with Feature Pyramid Network (P3, P4, P5, P6) for multi-scale features.
+- 🔗 **Unified embedding**: $U = F_{cur} + \alpha P$ (broadcast addition of target prior $P$). For SOT/VOS, $P$ is the initial mask or bbox; for MOT/MOTS, $P$ is neutral (zeros) or previous predictions.
+- ⏱️ **Temporal Attention Module (TAM)**: Q/K/V cross-attention between current and reference frame.
+- 🔄 **Temporal Consistency Module (TCM)**: Embedding-level consistency loss across consecutive frames.
+- 📎 **Feature Aggregation Module (FAM)**: Fuses TAM output with backbone/FPN features before the heads.
+- 🎯 **Unified heads**: Single detection head (SOT/MOT) and segmentation head (VOS/MOTS).
+- 🔒 **Self-supervised learning (SSL)**: Contrastive (InfoNCE-style) and TCM; optional refinement loop.
+- 🚀 **Two-stage training**: Stage 1 — SOT+MOT (detection only, ~50 epochs); Stage 2 — VOS+MOTS (segmentation, ~20 epochs); then joint fine-tune (~5 epochs). Warm-up + multi-step LR decay.
+- 📐 **Input resolution**: 640×360 (default) or 1280×720; ImageNet normalization.
+- 📊 **Evaluation**: LaSOT, TrackingNet (SOT); MOT17, BDD100K (MOT); DAVIS2016/2017 (VOS); MOTS20, BDD100K MOTS (MOTS).
 
 ### Key equations
 
@@ -43,7 +43,7 @@ $$\mathcal{L}_{TCM} = \frac{1}{N}\sum_{i=1}^{N} \left\| \mathbf{z}_t^{(i)} - \ma
 
 ---
 
-## Overview
+## 🏗️ Overview
 
 SSF4VSU is a **single model** that handles four visual scene understanding tasks (SOT, MOT, VOS, MOTS) via a shared backbone, unified embedding with target prior, temporal attention (TAM) and consistency (TCM), and task-specific heads. Training follows a **two-stage pipeline**: Stage 1 trains on SOT and MOT (detection only); Stage 2 adds VOS and MOTS (segmentation), then a short joint fine-tuning phase.
 
@@ -63,7 +63,7 @@ SSF4VSU is a **single model** that handles four visual scene understanding tasks
 
 ---
 
-## Project structure
+## 📂 Project structure
 
 Run all commands from the **repository root** (where `main.py` lives):
 
@@ -92,7 +92,7 @@ ssf4vsu/
 
 ---
 
-## Dataset preparation
+## 📦 Dataset preparation
 
 Per-task folders under `data/` (or a single combined root). Each sequence folder contains frames and `annots.txt`:
 
@@ -119,7 +119,7 @@ frame_idx, x, y, w, h, label_id, mask_path(optional)
 
 ---
 
-## Training (two-stage)
+## 🚀 Training (two-stage)
 
 From the **repo root** (after `pip install -r requirements.txt`):
 
@@ -140,7 +140,7 @@ Default config in code: resolution 640×360, Stage 1 = 50 epochs, Stage 2 = 20 e
 
 ---
 
-## Evaluation
+## 🧪 Evaluation
 
 From the **repo root**. Frames and target prior are loaded from the dataset; resolution matches training (default 640×360).
 
@@ -166,7 +166,7 @@ python main.py --mode eval --task VOS --checkpoint ./checkpoints/ssf4vsu_best.pt
 
 ---
 
-## Metrics
+## 📏 Metrics
 
 - **SOT**: Success (AUC), Precision@20, Normalized Precision  
 - **MOT**: MOTA, IDF1, FP, FN, ID switches  
@@ -190,17 +190,17 @@ Benchmark results (single model, no task-specific tuning). Full comparison table
 | **MOTS** | MOTS20 | sMOTSA / IDF1 | **69.0** / **70.5** |
 | **MOTS** | BDD100K MOTS | mMOTSA / mIDF1 | **31.2** / **46.0** |
 
-> **Note:** Same checkpoint for all tasks; input resolution 640×360 or 1280×720; online inference. See [RESULTS.md](RESULTS.md) for full comparison tables and ablation studies.
+> **Note:** Same checkpoint for all tasks; input resolution 640×360 or 1280×720; online inference. See [RESULTS.md](RESULTS.md) for full comparison tables and ablation studies. ✅ = ours.
 
 ---
 
-## Baselines
+## 🔧 Baselines
 
 Lightweight wrappers in `baselines.py`: SiamFC, SiamRPN++, TransT, Unicorn, OmniTracker. For exact reproduction, use official implementations or pretrained weights.
 
 ---
 
-## Requirements
+## 📋 Requirements
 
 ```bash
 pip install -r requirements.txt
@@ -220,7 +220,7 @@ Pillow
 
 ---
 
-## Citation
+## 📄 Citation
 
 ```bibtex
 @ARTICLE{11258901,
@@ -238,12 +238,12 @@ Pillow
 
 ---
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 This project builds on prior work in tracking (SiamFC, SiamRPN++, TransT, Unicorn, OmniTracker), segmentation (STM, STCN, XMem), MOT (CenterTrack, FairMOT, ByteTrack), and MOTS (TrackR-CNN, PCAN). We thank the authors for making their research publicly available.

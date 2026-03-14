@@ -1,12 +1,14 @@
-# Benchmark Results
+# 📊 Benchmark Results
 
 All results below are from the evaluation of SSF4VSU reported in our [paper](https://doi.org/10.1109/ACCESS.2025.3634778). Single model, no task-specific tuning; same checkpoint for all tasks. Input resolution: 1280×720 (or 640×360); online inference.
 
+*✅ = our method (SSF4VSU)*
+
 ---
 
-## Single-Object Tracking (SOT)
+## 🎯 Single-Object Tracking (SOT)
 
-### LaSOT & TrackingNet
+### 📌 LaSOT & TrackingNet
 
 | Tracker | LaSOT AUC (%) | LaSOT Prec@20 (%) | TrackingNet AUC (%) | TrackingNet Prec (%) |
 |:--------|--------------:|------------------:|--------------------:|---------------------:|
@@ -18,19 +20,17 @@ All results below are from the evaluation of SSF4VSU reported in our [paper](htt
 | Unicorn | 68.5 | 74.1 | 83.0 | 82.2 |
 | OmniTracker | 65.9 | 69.3 | 80.2 | 77.7 |
 | OmniTracker-L | 69.1 | 75.4 | 83.4 | 82.3 |
-| **SSF4VSU (Ours)** | **71.3** | **77.8** | **84.5** | **83.0** |
+| **SSF4VSU (Ours)** ✅ | **71.3** | **77.8** | **84.5** | **83.0** |
 
-**LaSOT success and precision curves:**
+**📈 LaSOT success and precision curves** (original size; click for PDF):
 
-<img src="docs/results/lasot_ope_plots.png" width="420" />
-
-*[PDF](docs/results/lasot_ope_plots.pdf)*
+[<img src="docs/results/lasot_ope_plots.png" alt="LaSOT success and precision" />](docs/results/lasot_ope_plots.pdf)
 
 ---
 
-## Multi-Object Tracking (MOT)
+## 👥 Multi-Object Tracking (MOT)
 
-### MOT17 (test set)
+### 📌 MOT17 (test set)
 
 | Tracker | MOTA↑ | IDF1↑ | HOTA↑ | MT↑ | ML↓ | FP↓ | FN↓ | IDs↓ |
 |:--------|-----:|------:|------:|----:|----:|----:|----:|-----:|
@@ -41,17 +41,15 @@ All results below are from the evaluation of SSF4VSU reported in our [paper](htt
 | TransMOT | 76.7 | 75.1 | 61.7 | 51.0% | 16.4% | 36231 | 93150 | 2346 |
 | Unicorn | 77.2 | 75.5 | 61.7 | 58.7% | 11.2% | 50087 | 73349 | 5379 |
 | OmniTracker-L | 79.1 | 75.6 | 62.3 | – | – | 87192 | 1968 | – |
-| **SSF4VSU (Ours)** | **81.9** | **80.3** | **65.2** | **60.0%** | **12.3%** | **48000** | **72000** | **4520** |
+| **SSF4VSU (Ours)** ✅ | **81.9** | **80.3** | **65.2** | **60.0%** | **12.3%** | **48000** | **72000** | **4520** |
 
-**MOT17 result figures** (three per row):
+**📁 MOT17 result figures** (three per row; click any image for full-quality PDF):
 
-| MOTA vs IDF1 tradeoff | MOTA, IDF1, HOTA bars | FP / FN / ID breakdown |
+| 📊 MOTA vs IDF1 tradeoff | 📊 MOTA, IDF1, HOTA bars | 📊 FP / FN / ID breakdown |
 |:---------------------:|:---------------------:|:----------------------:|
-| ![MOT17 tradeoff](docs/results/mot17_tradeoff_scatter.png) | ![MOT17 bars](docs/results/mot17_grouped_bars.png) | ![MOT17 errors](docs/results/mot17_error_breakdown.png) |
+| [<img src="docs/results/mot17_tradeoff_scatter.png" width="320" alt="MOT17 tradeoff" />](docs/results/mot17_tradeoff_scatter.pdf) | [<img src="docs/results/mot17_grouped_bars.png" width="320" alt="MOT17 bars" />](docs/results/mot17_grouped_bars.pdf) | [<img src="docs/results/mot17_error_breakdown.png" width="320" alt="MOT17 errors" />](docs/results/mot17_error_breakdown.pdf) |
 
-*[PDF](docs/results/mot17_tradeoff_scatter.pdf) · [PDF](docs/results/mot17_grouped_bars.pdf) · [PDF](docs/results/mot17_error_breakdown.pdf)*
-
-### BDD100K (validation)
+### 📌 BDD100K (validation)
 
 | Tracker | mMOTSA↑ | mIDF1↑ | MOTA↑ | IDF1↑ | FN↓ | FP↓ | IDs↓ | MT↑ | ML↓ |
 |:--------|-------:|-------:|------:|------:|----:|----:|-----:|----:|----:|
@@ -59,21 +57,19 @@ All results below are from the evaluation of SSF4VSU reported in our [paper](htt
 | QDTrack | 35.5 | 52.3 | 64.3 | 72.3 | 201041 | 80054 | 10790 | 17353 | 5167 |
 | ByteTrack | 40.1 | 55.8 | 69.6 | 71.3 | 169073 | 63869 | 15466 | 18057 | 5107 |
 | Unicorn | 41.2 | 54.0 | 66.6 | 71.3 | 95454 | 41648 | 10876 | 10296 | 2505 |
-| **SSF4VSU (Ours)** | **43.5** | **57.0** | **71.0** | **74.5** | **90000** | **40000** | **11500** | **11000** | **3048** |
+| **SSF4VSU (Ours)** ✅ | **43.5** | **57.0** | **71.0** | **74.5** | **90000** | **40000** | **11500** | **11000** | **3048** |
 
-**BDD100K MOT result figures** (three per row):
+**📁 BDD100K MOT result figures** (three per row; click any image for full-quality PDF):
 
-| Error composition | MT vs ML | Grouped metrics |
+| 📊 Error composition | 📊 MT vs ML | 📊 Grouped metrics |
 |:-----------------:|:--------:|:---------------:|
-| ![BDD100K errors](docs/results/bdd100k_error_composition.png) | ![BDD100K MT-ML](docs/results/bdd100k_mt_ml.png) | ![BDD100K metrics](docs/results/bdd100k_grouped_metrics.png) |
-
-*[PDF](docs/results/bdd100k_error_composition.pdf) · [PDF](docs/results/bdd100k_mt_ml.pdf) · [PDF](docs/results/bdd100k_grouped_metrics.pdf)*
+| [<img src="docs/results/bdd100k_error_composition.png" width="320" alt="BDD100K errors" />](docs/results/bdd100k_error_composition.pdf) | [<img src="docs/results/bdd100k_mt_ml.png" width="320" alt="BDD100K MT-ML" />](docs/results/bdd100k_mt_ml.pdf) | [<img src="docs/results/bdd100k_grouped_metrics.png" width="320" alt="BDD100K metrics" />](docs/results/bdd100k_grouped_metrics.pdf) |
 
 ---
 
-## Video Object Segmentation (VOS)
+## 🎬 Video Object Segmentation (VOS)
 
-### DAVIS-2016 & DAVIS-2017
+### 📌 DAVIS-2016 & DAVIS-2017
 
 | Method | DAVIS-2016 J&F | J Mean | F Mean | DAVIS-2017 J&F | J Mean | F Mean |
 |:-------|---------------:|-------:|-------:|----------------:|-------:|-------:|
@@ -85,19 +81,17 @@ All results below are from the evaluation of SSF4VSU reported in our [paper](htt
 | SiamMask | 69.8 | 71.7 | 67.8 | 56.4 | 54.3 | 58.5 |
 | Unicorn | 87.4 | 86.5 | 88.2 | 69.2 | 65.2 | 73.2 |
 | OmniTracker-L | 88.5 | 87.3 | 89.7 | 71.0 | 66.8 | 75.2 |
-| **SSF4VSU (Ours)** | **93.3** | **92.4** | **94.4** | **89.0** | **86.7** | **93.4** |
+| **SSF4VSU (Ours)** ✅ | **93.3** | **92.4** | **94.4** | **89.0** | **86.7** | **93.4** |
 
-**DAVIS-2016/2017 normalized radar** (J&F, J Mean, F Mean):
+**📈 DAVIS-2016/2017 normalized radar** (J&F, J Mean, F Mean; click for full-quality PDF):
 
-<img src="docs/results/davis_radar_top5_norm.png" width="420" />
-
-*[PDF](docs/results/davis_radar_top5_norm.pdf)*
+[<img src="docs/results/davis_radar_top5_norm.png" width="420" alt="DAVIS radar" />](docs/results/davis_radar_top5_norm.pdf)
 
 ---
 
-## Multi-Object Tracking and Segmentation (MOTS)
+## 🔀 Multi-Object Tracking and Segmentation (MOTS)
 
-### MOTS20 (pedestrians)
+### 📌 MOTS20 (pedestrians)
 
 | Method | sMOTSA↑ | MOTSA↑ | MOTSP↑ | IDF1↑ | ID Sw.↓ |
 |:-------|--------:|-------:|-------:|------:|--------:|
@@ -105,87 +99,81 @@ All results below are from the evaluation of SSF4VSU reported in our [paper](htt
 | PointTrack V2 | 62.3 | – | – | 42.9 | 541 |
 | TrackFormer | 54.9 | – | – | 63.6 | 278 |
 | Unicorn | 65.3 | – | – | 65.9 | 398 |
-| **SSF4VSU (Ours)** | **69.0** | **74.5** | **82.0** | **70.5** | **357** |
+| **SSF4VSU (Ours)** ✅ | **69.0** | **74.5** | **82.0** | **70.5** | **357** |
 
-### BDD100K MOTS (validation)
+### 📌 BDD100K MOTS (validation)
 
 | Method | mMOTSA↑ | mMOTSP↑ | mIDF1↑ | ID Sw.↓ | mAP↑ |
 |:-------|--------:|--------:|-------:|--------:|-----:|
 | QDTrack-mots-fix | 23.5 | 66.3 | 44.5 | 973 | 25.5 |
 | PCAN | 27.4 | 66.7 | 45.1 | **876** | 26.6 |
 | Unicorn | 29.6 | 67.7 | 44.2 | 1731 | 32.1 |
-| **SSF4VSU (Ours)** | **31.2** | **70.2** | **46.0** | 1462 | **33.7** |
+| **SSF4VSU (Ours)** ✅ | **31.2** | **70.2** | **46.0** | 1462 | **33.7** |
 
-**BDD100K MOTS result figures** (radar and line chart):
+**📁 BDD100K MOTS result figures** (same row; click any image for full-quality PDF):
 
-*Radar (mMOTSA, mMOTSP, mIDF1, mAP)*
-
-<img src="docs/results/bdd100k_mots_radar.png" width="420" />
-
-*ID switches comparison*
-
-<img src="docs/results/bdd100k_mots_idsw_line.png" width="420" />
-
-*[PDF](docs/results/bdd100k_mots_radar.pdf) · [PDF](docs/results/bdd100k_mots_idsw_line.pdf)*
+| 📊 Radar (mMOTSA, mMOTSP, mIDF1, mAP) | 📊 ID switches comparison |
+|:----------------------------------:|:----------------------:|
+| [<img src="docs/results/bdd100k_mots_radar.png" width="320" alt="BDD100K MOTS radar" />](docs/results/bdd100k_mots_radar.pdf) | [<img src="docs/results/bdd100k_mots_idsw_line.png" width="320" alt="BDD100K MOTS ID switches" />](docs/results/bdd100k_mots_idsw_line.pdf) |
 
 ---
 
-## Ablation Studies
+## 🔬 Ablation Studies
 
 Full model vs. ablated variants (TAM, TCM, SSL removed) on LaSOT, MOT17, DAVIS-2017, MOTS20.
 
-### LaSOT (SOT)
+### 📌 LaSOT (SOT)
 
 | Model | Success (AUC) | Precision |
 |:------|--------------:|----------:|
-| **Full SSF4VSU** | **71.3** | **77.8** |
+| **Full SSF4VSU** ✅ | **71.3** | **77.8** |
 | – TAM | 68.5 | 73.0 |
 | – TCM | 67.0 | 72.6 |
 | – SSL | 69.7 | 74.5 |
 | – TAM & TCM | 65.0 | 70.5 |
 
-### MOT17 (MOT)
+### 📌 MOT17 (MOT)
 
 | Model | MOTA | IDF1 |
 |:------|-----:|-----:|
-| **Full SSF4VSU** | **81.9** | **80.3** |
+| **Full SSF4VSU** ✅ | **81.9** | **80.3** |
 | – TAM | 78.1 | 78.2 |
 | – TCM | 76.6 | 75.2 |
 | – SSL | 78.9 | 78.8 |
 | – TAM & TCM | 73.6 | 70.2 |
 
-### DAVIS-2017 (VOS)
+### 📌 DAVIS-2017 (VOS)
 
 | Model | J&F (%) |
 |:------|--------:|
-| **Full SSF4VSU** | **89.0** |
+| **Full SSF4VSU** ✅ | **89.0** |
 | – TAM | 84.9 |
 | – TCM | 85.7 |
 | – SSL | 87.0 |
 | – TAM & TCM | 81.7 |
 
-### MOTS20 (MOTS)
+### 📌 MOTS20 (MOTS)
 
 | Model | sMOTSA (%) | IDF1 (%) |
 |:------|-----------:|---------:|
-| **Full SSF4VSU** | **69.0** | **70.5** |
+| **Full SSF4VSU** ✅ | **69.0** | **70.5** |
 | – TAM | 67.0 | 67.0 |
 | – TCM | 65.0 | 64.0 |
 | – SSL | 68.0 | 68.5 |
 | – TAM & TCM | 62.0 | 60.0 |
 
-**Ablation figures:**
+**📉 Ablation figures** (one row; bar chart enlarged, heatmap reduced):
 
-| Ablation bar chart (metric drop by variant) | Ablation relative drop heatmap |
+| 📉 Ablation bar chart (metric drop by variant) | 🗺️ Ablation relative drop heatmap |
 |:------------------------------------------:|:------------------------------:|
-| ![Ablation bars](docs/ablation/ablation-bars.png) | ![Ablation heatmap](docs/ablation/ablation-heatmap.png) |
+| <img src="docs/ablation/ablation-bars.png" width="480" alt="Ablation bars" /> | <img src="docs/ablation/ablation-heatmap.png" width="400" alt="Ablation heatmap" /> |
 
 ---
 
-## Result figures (summary)
+## 📁 Result figures (summary)
 
 Figures are shown inline above after each dataset table (PNG). PDFs are in [docs/results/](docs/results/) for full resolution. Ablation figures are in [docs/ablation/](docs/ablation/).
 
 ---
 
-*Source: See cited paper for experimental details, protocols, and full discussion.*
+*📄 Source: See cited paper for experimental details, protocols, and full discussion.*
