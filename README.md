@@ -43,6 +43,16 @@ $$\mathcal{L}_{TCM} = \frac{1}{N}\sum_{i=1}^{N} \left\| \mathbf{z}_t^{(i)} - \ma
 
 ---
 
+## Overview
+
+SSF4VSU is a **single model** that handles four visual scene understanding tasks (SOT, MOT, VOS, MOTS) via a shared backbone, unified embedding with target prior, temporal attention (TAM) and consistency (TCM), and task-specific heads. Training follows a **two-stage pipeline**: Stage 1 trains on SOT and MOT (detection only); Stage 2 adds VOS and MOTS (segmentation), then a short joint fine-tuning phase.
+
+![Pipeline](docs/architecture/block-diagram.png)
+
+**Architecture:** See [docs/architecture/](docs/architecture/) for the full set of diagrams: block diagram, backbone+FPN, unified embedding, TAM, unified heads, and SSL strategies. The two-stage training flow is in `two-stage-training.png`.
+
+---
+
 ## Project structure
 
 Run all commands from the **repository root** (where `main.py` lives):
@@ -50,6 +60,7 @@ Run all commands from the **repository root** (where `main.py` lives):
 ```
 ssf4vsu/
 ├── README.md
+├── RESULTS.md      # Full comparison tables, baselines, ablation studies
 ├── LICENSE
 ├── requirements.txt
 ├── .gitignore
@@ -61,7 +72,10 @@ ssf4vsu/
 ├── evaluate.py     # SOT/MOT/VOS/MOTS metrics
 ├── utils.py        # Checkpoints, logging
 ├── baselines.py    # Wrappers for SOTA baselines
-├── ALIGNMENT_WITH_THESIS.md   # Optional: thesis alignment notes
+├── docs/           # Figures and documentation
+│   ├── architecture/   # Pipeline, block diagram, TAM, heads, SSL
+│   ├── results/        # Result graphs (LaSOT, MOT17, BDD100K, DAVIS, MOTS)
+│   └── ablation/       # Ablation bar chart, heatmap (optional)
 ├── data/           # Datasets (gitignored; see Dataset preparation)
 └── checkpoints/    # Saved models (gitignored)
 ```
@@ -148,6 +162,25 @@ python main.py --mode eval --task VOS --checkpoint ./checkpoints/ssf4vsu_best.pt
 - **MOT**: MOTA, IDF1, FP, FN, ID switches  
 - **VOS**: Jaccard (J), F-measure (F), J&F  
 - **MOTS**: sMOTSA, MOTSA, MOTSP, IDF1  
+
+---
+
+## 📊 Results
+
+Benchmark results (single model, no task-specific tuning). Full comparison tables with baselines and ablation studies are in [RESULTS.md](RESULTS.md). Result plots are under [docs/results/](docs/results/).
+
+| Task | Dataset | Metric | SSF4VSU |
+|:-----|:-------|:-------|--------:|
+| **SOT** | LaSOT | AUC / Prec@20 | **71.3** / **77.8** |
+| **SOT** | TrackingNet | AUC / Prec@20 | **84.5** / **83.0** |
+| **MOT** | MOT17 | MOTA / IDF1 | **81.9** / **80.3** |
+| **MOT** | BDD100K | mMOTSA / mIDF1 | **43.5** / **57.0** |
+| **VOS** | DAVIS-2016 | J&F | **93.3** |
+| **VOS** | DAVIS-2017 | J&F | **89.0** |
+| **MOTS** | MOTS20 | sMOTSA / IDF1 | **69.0** / **70.5** |
+| **MOTS** | BDD100K MOTS | mMOTSA / mIDF1 | **31.2** / **46.0** |
+
+> **Note:** Same checkpoint for all tasks; input resolution 640×360 or 1280×720; online inference. See [RESULTS.md](RESULTS.md) for full comparison tables and ablation studies.
 
 ---
 
